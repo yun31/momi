@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import ImagePreloader from "./components/ImagePreloader";
 import Screen1 from "./screens/screen1";
 import Screen2 from "./screens/screen2";
 import Screen3 from "./screens/screen3";
@@ -200,7 +201,7 @@ export default function Home() {
     navigateToScreen("screen15");
   };
 
-  return (
+  const MainContent = () => (
     <main>
       {currentScreen === "screen1" && (
         <Screen1 onEnterMuseum={handleEnterMuseum} />
@@ -312,5 +313,11 @@ export default function Home() {
         <Screen15 onBack={handleGoBack} onHome={handleGoHome} />
       )}
     </main>
+  );
+
+  return (
+    <ImagePreloader>
+      <MainContent />
+    </ImagePreloader>
   );
 }
