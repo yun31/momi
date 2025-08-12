@@ -1,103 +1,316 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState } from "react";
+import Screen1 from "./screens/screen1";
+import Screen2 from "./screens/screen2";
+import Screen3 from "./screens/screen3";
+import Screen4 from "./screens/screen4";
+import Screen5 from "./screens/screen5";
+import Screen6 from "./screens/screen6";
+import Screen7 from "./screens/screen7";
+import Screen8 from "./screens/screen8";
+import Screen9 from "./screens/screen9";
+import Screen10 from "./screens/screen10";
+import Screen11 from "./screens/screen11";
+import Screen12 from "./screens/screen12";
+import Screen13 from "./screens/screen13";
+import Screen14 from "./screens/screen14";
+import Screen15 from "./screens/screen15";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [currentScreen, setCurrentScreen] = useState<
+    | "screen1"
+    | "screen2"
+    | "screen3"
+    | "screen4"
+    | "screen5"
+    | "screen6"
+    | "screen7"
+    | "screen8"
+    | "screen9"
+    | "screen10"
+    | "screen11"
+    | "screen12"
+    | "screen13"
+    | "screen14"
+    | "screen15"
+  >("screen1");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+  // 네비게이션 히스토리를 관리하는 스택
+  const [navigationHistory, setNavigationHistory] = useState<
+    (
+      | "screen1"
+      | "screen2"
+      | "screen3"
+      | "screen4"
+      | "screen5"
+      | "screen6"
+      | "screen7"
+      | "screen8"
+      | "screen9"
+      | "screen10"
+      | "screen11"
+      | "screen12"
+      | "screen13"
+      | "screen14"
+      | "screen15"
+    )[]
+  >(["screen1"]);
+
+  // 선택된 그림 상태 관리 (제1전시관)
+  const [selectedPicture, setSelectedPicture] = useState<
+    "pic1" | "pic2" | "pic3" | null
+  >(null);
+
+  // 선택된 그림 상태 관리 (제2전시관)
+  const [selectedPainting, setSelectedPainting] = useState<
+    "painting1" | "painting2" | "painting3" | null
+  >(null);
+
+  // 퀴즈 결과 상태 관리
+  const [quizResult, setQuizResult] = useState<{
+    selectedOption: number;
+    isCorrect: boolean;
+  } | null>(null);
+
+  // AI 생성 이미지 URL 상태 관리
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
+    null
+  );
+
+  // 새로운 화면으로 이동하는 공통 함수
+  const navigateToScreen = (
+    screen:
+      | "screen1"
+      | "screen2"
+      | "screen3"
+      | "screen4"
+      | "screen5"
+      | "screen6"
+      | "screen7"
+      | "screen8"
+      | "screen9"
+      | "screen10"
+      | "screen11"
+      | "screen12"
+      | "screen13"
+      | "screen14"
+      | "screen15"
+  ) => {
+    setCurrentScreen(screen);
+    setNavigationHistory((prev) => [...prev, screen]);
+  };
+
+  // 처음으로 돌아가는 공통 함수
+  const handleGoHome = () => {
+    setCurrentScreen("screen1");
+    setNavigationHistory(["screen1"]);
+    setSelectedPicture(null); // 제1전시관 선택된 그림 초기화
+    setSelectedPainting(null); // 제2전시관 선택된 그림 초기화
+    setQuizResult(null); // 퀴즈 결과도 초기화
+    setGeneratedImageUrl(null); // 생성된 이미지 URL도 초기화
+  };
+
+  // 이전 화면으로 돌아가는 공통 함수
+  const handleGoBack = () => {
+    if (navigationHistory.length > 1) {
+      const newHistory = [...navigationHistory];
+      newHistory.pop(); // 현재 화면 제거
+      const previousScreen = newHistory[newHistory.length - 1];
+
+      setCurrentScreen(previousScreen);
+      setNavigationHistory(newHistory);
+    }
+  };
+
+  // 개별 화면별 네비게이션 핸들러들
+  const handleEnterMuseum = () => {
+    navigateToScreen("screen2");
+  };
+
+  const handleViewExhibition = () => {
+    navigateToScreen("screen3");
+  };
+
+  const handleNextFromScreen3 = () => {
+    navigateToScreen("screen4");
+  };
+
+  const handlePictureSelect = (pictureId: "pic1" | "pic2" | "pic3") => {
+    setSelectedPicture(pictureId);
+    navigateToScreen("screen5");
+  };
+
+  const handleNextFromScreen5 = () => {
+    navigateToScreen("screen6");
+  };
+
+  const handleNextFromScreen6 = () => {
+    navigateToScreen("screen7");
+  };
+
+  const handleQuizAnswer = (selectedOption: number, isCorrect: boolean) => {
+    setQuizResult({ selectedOption, isCorrect });
+    navigateToScreen("screen8");
+  };
+
+  const handleNextFromScreen8 = () => {
+    navigateToScreen("screen9");
+  };
+
+  const handleReturnToExhibition1 = () => {
+    // 상태 초기화하고 screen3로 이동
+    setSelectedPicture(null);
+    setQuizResult(null);
+    navigateToScreen("screen3");
+  };
+
+  const handleGoToExhibition2 = () => {
+    navigateToScreen("screen10");
+  };
+
+  const handlePaintingSelect = (
+    paintingId: "painting1" | "painting2" | "painting3"
+  ) => {
+    setSelectedPainting(paintingId);
+    navigateToScreen("screen11");
+  };
+
+  const handleGenerateImage = (answers: {
+    answer1: string;
+    answer2: string;
+    answer3: string;
+    generatedImageUrl?: string;
+  }) => {
+    if (answers.generatedImageUrl) {
+      setGeneratedImageUrl(answers.generatedImageUrl);
+      navigateToScreen("screen12");
+    }
+  };
+
+  const handleViewOthers = () => {
+    navigateToScreen("screen13");
+  };
+
+  const handleGoToScreen14 = () => {
+    navigateToScreen("screen14");
+  };
+
+  const handleLearnMore = () => {
+    navigateToScreen("screen15");
+  };
+
+  return (
+    <main>
+      {currentScreen === "screen1" && (
+        <Screen1 onEnterMuseum={handleEnterMuseum} />
+      )}
+      {currentScreen === "screen2" && (
+        <Screen2
+          onViewExhibition={handleViewExhibition}
+          onBack={handleGoBack}
+          onHome={handleGoHome}
+        />
+      )}
+      {currentScreen === "screen3" && (
+        <Screen3
+          onNext={handleNextFromScreen3}
+          onBack={handleGoBack}
+          onHome={handleGoHome}
+        />
+      )}
+      {currentScreen === "screen4" && (
+        <Screen4
+          onPictureSelect={handlePictureSelect}
+          onBack={handleGoBack}
+          onHome={handleGoHome}
+        />
+      )}
+      {currentScreen === "screen5" && selectedPicture && (
+        <Screen5
+          selectedPicture={selectedPicture}
+          onNext={handleNextFromScreen5}
+          onBack={handleGoBack}
+          onHome={handleGoHome}
+        />
+      )}
+      {currentScreen === "screen6" && (
+        <Screen6
+          onNext={handleNextFromScreen6}
+          onBack={handleGoBack}
+          onHome={handleGoHome}
+        />
+      )}
+      {currentScreen === "screen7" && selectedPicture && (
+        <Screen7
+          selectedPicture={selectedPicture}
+          onQuizAnswer={handleQuizAnswer}
+          onBack={handleGoBack}
+          onHome={handleGoHome}
+        />
+      )}
+      {currentScreen === "screen8" && selectedPicture && quizResult && (
+        <Screen8
+          selectedPicture={selectedPicture}
+          selectedOption={quizResult.selectedOption}
+          isCorrect={quizResult.isCorrect}
+          onNext={handleNextFromScreen8}
+          onBack={handleGoBack}
+          onHome={handleGoHome}
+        />
+      )}
+      {currentScreen === "screen9" && (
+        <Screen9
+          onReturnToExhibition1={handleReturnToExhibition1}
+          onGoToExhibition2={handleGoToExhibition2}
+          onBack={handleGoBack}
+          onHome={handleGoHome}
+        />
+      )}
+      {currentScreen === "screen10" && (
+        <Screen10
+          onPaintingSelect={handlePaintingSelect}
+          onBack={handleGoBack}
+          onHome={handleGoHome}
+        />
+      )}
+      {currentScreen === "screen11" && selectedPainting && (
+        <Screen11
+          selectedPainting={selectedPainting}
+          onGenerateImage={handleGenerateImage}
+          onBack={handleGoBack}
+          onHome={handleGoHome}
+        />
+      )}
+      {currentScreen === "screen12" &&
+        selectedPainting &&
+        generatedImageUrl && (
+          <Screen12
+            selectedPainting={selectedPainting}
+            generatedImageUrl={generatedImageUrl}
+            onBack={handleGoBack}
+            onHome={handleGoHome}
+            onViewOthers={handleViewOthers}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        )}
+      {currentScreen === "screen13" && selectedPainting && (
+        <Screen13
+          selectedPainting={selectedPainting}
+          onBack={handleGoBack}
+          onHome={handleGoHome}
+          onNext={handleGoToScreen14}
+        />
+      )}
+      {currentScreen === "screen14" && (
+        <Screen14
+          onBack={handleGoBack}
+          onHome={handleGoHome}
+          onLearnMore={handleLearnMore}
+        />
+      )}
+      {currentScreen === "screen15" && (
+        <Screen15 onBack={handleGoBack} onHome={handleGoHome} />
+      )}
+    </main>
   );
 }
