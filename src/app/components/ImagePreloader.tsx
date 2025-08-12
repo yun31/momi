@@ -11,6 +11,7 @@ const imagePaths = [
   "/asset/frame.png",
   "/asset/image.png",
   "/asset/illust1.png",
+  "/asset/illust2.png",
   "/asset/museum.png",
   "/asset/painting1.png",
   "/asset/painting2.png",
